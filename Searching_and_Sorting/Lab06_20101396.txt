@@ -1,0 +1,466 @@
+//Name : ATHAR NOOR MOHAMMAD RAFEE	ID : 20101396
+//CSE220 LAB06
+
+//Task1
+
+import java.io.BufferedOutputStream;
+import java.io.PrintWriter;
+
+//Task1
+public class Tester {
+    static final PrintWriter pw = new PrintWriter(new BufferedOutputStream(System.out));
+
+    public static void main(String[] args) {
+        //Todo: I Should put some more random test
+        int[] test = {1, 2, 3, 9, 10, 6, 7, 8, 4, 5, -53454, -34, 0, 36, 545, 764, 90, 1010};
+        pw.print("Before sorting the array : ");
+        printArray(test);
+        pw.print("After soring the array : ");
+        Selection_sor_Recursively(test, 0, test.length);
+        printArray(test);
+        pw.close();
+    }
+
+    static void Selection_sor_Recursively(int[] array, int start, int end) {
+        if (start == end) return;
+        int min_index = give_me_min_index(array, start, end - 1);//This method will return min index
+        if (min_index != start) {
+            int tem = array[min_index];
+            array[min_index] = array[start];
+            array[start] = tem;
+        }
+        Selection_sor_Recursively(array, start + 1, end);
+    }
+
+    static int give_me_min_index(int[] array, int start, int end) {
+        if (start == end) return start;
+        int min_index = give_me_min_index(array, start + 1, end); //Recursively calling the method
+        return array[min_index] > array[start] ? start : min_index;
+    }
+
+    static void printArray(int[] array) {
+        if (array.length == 0) {
+            pw.println("Empty Array");
+            return;
+        }
+        pw.print("[");
+        recursively_printArray(array, 0, array.length - 1); //I don't like recursion
+        pw.println(array[array.length - 1] + "]");
+    }
+
+    static void recursively_printArray(int[] array, int start, int end) {
+        if (start == end) return;
+        pw.print(array[start] + ", ");
+        recursively_printArray(array, start + 1, end);
+    }
+}
+
+//Task2
+
+import java.io.BufferedOutputStream;
+import java.io.PrintWriter;
+
+//Task2
+public class Tester {
+    static final PrintWriter pw = new PrintWriter(new BufferedOutputStream(System.out));
+
+    public static void main(String[] args) {
+        int[] test1 = {54545, -5454, 100000, 1, 3, 2, 56, 74};
+        pw.print("Before sorting the array : ");
+        printArray(test1);
+        Selection_Sort_recursively(test1, 0, test1.length);
+        pw.print("After sorting the array : ");
+        printArray(test1);
+        pw.close();
+    }
+
+    static void Selection_Sort_recursively(int[] array, int start, int end) {
+        if (start == end) return;
+        int current_value = array[start];
+        int i = start;
+        //Sorting the sbu-array
+        while (i > 0 && array[i - 1] > current_value) {
+            array[i] = array[i - 1];
+            i--;
+        }
+        array[i] = current_value;
+        Selection_Sort_recursively(array, start + 1, end);
+    }
+
+    static void printArray(int[] array) {
+        if (array.length == 0) {
+            pw.println("Empty Array");
+            return;
+        }
+        pw.print("[");
+        recursively_printArray(array, 0, array.length - 1); //I don't like recursion that much
+        pw.println(array[array.length - 1] + "]");
+    }
+
+    static void recursively_printArray(int[] array, int start, int end) {
+        if (start == end) return;
+        pw.print(array[start] + ", ");
+        recursively_printArray(array, start + 1, end);
+    }
+}
+
+//Task3
+
+import java.io.BufferedOutputStream;
+import java.io.PrintWriter;
+
+//Task3
+public class Tester {
+    static final PrintWriter pw = new PrintWriter(new BufferedOutputStream(System.out));
+
+    public static void main(String[] args) {
+        int[] test1 = {45245, -452354, 234, 0, 1, 3, 6, 10, 5430, 2345};
+        MyList list1 = new MyList(test1);
+        pw.print("Before sorting the Linked List : ");
+        pw.flush();
+        list1.printList();
+        sortList(list1);
+        pw.print("After sorting the linked list : ");
+        pw.flush();
+        list1.printList();
+        pw.close();
+    }
+
+    static void sortList(MyList list) {     //Bubble sort but not optimized
+        int size = list.length();
+        Goto:
+        {
+            if (size < 2) break Goto;
+            for (int i = 0; i < size; i++) {
+                Node cur = list.head;
+                Node nextNode = list.head.next;
+                for (int j = 0; j < size - 1; j++) {
+                    if ((int) cur.data > (int) nextNode.data) {
+                        int temp = (int) cur.data;
+                        cur.data = nextNode.data;
+                        nextNode.data = temp;
+                    }
+                    cur = nextNode;
+                    nextNode = nextNode.next;
+                }
+            }
+        }
+    }
+}
+
+class MyList {
+    final PrintWriter pw = new PrintWriter(new BufferedOutputStream(System.out));
+    Node head;
+
+    //creates a list from an array
+    MyList(int[] a) {
+        if (a.length == 0) throw new RuntimeException("array can't be empty");
+        head = new Node(a[0], null);
+        Node current = head;
+        for (int i = 1; i < a.length; i++) {
+            current.next = new Node(a[i], null); //Connecting them together
+            current = current.next;
+        }
+    }
+
+    //prints the linked list
+    void printList() {
+        Node cur_element = head;
+        if (cur_element == null) {
+            pw.println("Empty list");
+            pw.flush();
+            return;
+        }
+        while (cur_element.next != null) {
+            pw.print(cur_element.data + " -> ");
+            cur_element = cur_element.next;
+        }
+        pw.println(cur_element.data);
+        pw.flush();
+    }
+
+    int length() {
+        int c = 0;
+        Node cur = head;
+        while (cur != null) {
+            c++;
+            cur = cur.next;
+        }
+        return c;
+    }
+}
+
+class Node {
+    // reference to the next element
+    Node next;//By default null
+
+    Object data;
+
+    @SuppressWarnings("unused")
+    public Node(Object dataValue, Node nextValue) {
+        next = nextValue;
+        data = dataValue;
+    }
+}
+
+//Task4
+
+import java.io.BufferedOutputStream;
+import java.io.PrintWriter;
+
+//Task4
+public class Tester {
+    static final PrintWriter pw = new PrintWriter(new BufferedOutputStream(System.out));
+
+    public static void main(String[] args) {
+        int[] test1 = {-345, -4324, -10000, 54, 64, 9, 54, 2345, 0, 1, 65, 2};
+        MyList list1 = new MyList(test1);
+        pw.print("Before sorting the Linked List : ");
+        pw.flush();
+        list1.printList();
+        pw.print("After sorting the Linked List : ");
+        pw.flush();
+        sortList(list1);//Sorting the linked list using selection sort.
+        list1.printList();//printing the list
+        pw.close();//Closing the output stream
+    }
+
+    static void sortList(MyList list) {
+        //Todo: I will only swap the data not the node itself which is easy.
+        Node cur = list.head;
+        while (cur != null) {
+            Node cur_min = cur;
+            Node nextNode = cur.next;
+            while (nextNode != null) {
+                if ((int) cur_min.data > (int) nextNode.data) cur_min = nextNode;
+                nextNode = nextNode.next;
+            }
+            int tem = (int) cur.data; //Just swapping the data
+            cur.data = cur_min.data;
+            cur_min.data = tem;
+            cur = cur.next;//Continuing to the next node.
+        }
+    }
+}
+
+class MyList {
+    final PrintWriter pw = new PrintWriter(new BufferedOutputStream(System.out));
+    Node head;
+
+    //creates a list from an array
+    MyList(int[] a) {
+        if (a.length == 0) throw new RuntimeException("array can't be empty");
+        head = new Node(a[0], null);
+        Node current = head;
+        for (int i = 1; i < a.length; i++) {
+            current.next = new Node(a[i], null);
+            current = current.next;
+        }
+    }
+
+    //prints the linked list
+    void printList() {
+        Node cur_element = head;
+        if (cur_element == null) {
+            pw.println("Empty list");
+            pw.flush();
+            return;
+        }
+        while (cur_element.next != null) {
+            pw.print(cur_element.data + " -> ");
+            cur_element = cur_element.next;
+        }
+        pw.println(cur_element.data);
+        pw.flush();
+    }
+}
+
+class Node {
+    // reference to the next element
+    Node next;//By default null
+    Object data;
+
+    @SuppressWarnings("unused")
+    public Node(Object dataValue, Node nextValue) {
+        next = nextValue;
+        data = dataValue;
+    }
+}
+
+//Task5
+
+import java.io.BufferedOutputStream;
+import java.io.PrintWriter;
+
+//Task5
+public class Tester {
+    static final PrintWriter pw = new PrintWriter(new BufferedOutputStream(System.out));
+
+    public static void main(String[] args) {
+        int[] test1 = {-3434, -5345, 9, 0, 2345, 356634, 245345, 2, 10, 11, 645, 111};
+        MyList list = new MyList(test1);
+        pw.print("Before sorting doubly linked list : ");
+        printList(list);
+        pw.print("Printing the linked list in reverse order using previous link : ");
+        printListReverseOrder(list);//Printing in reverse order to check if everything is connected properly
+        pw.print("After sorting the doubly linked list : ");
+        insertionSort(list);//This method will sort my list using insertion sort.
+        printList(list);
+        pw.print("Printing the linked list in reverse order using previous link : ");
+        printListReverseOrder(list);//Printing in reverse order to check if everything is connected properly
+        pw.close();//Closing the output Stream.
+    }
+
+    //Method to sort a doubly linked list using insertion sort
+    static void insertionSort(MyList list) {
+        //Todo: Basically creating a newNode where all the elements will be in sorted order.
+        Node sorted = null;
+        //Todo: Traverse the entire list and insert each element into the sorted list.
+        Node cur = list.head;
+        while (cur != null) {
+            Node tem = cur.next;//Storing tem to continue the iteration
+            cur.previous = cur.next = null; //Removing link
+            sorted = sortedInsert(sorted, cur);
+            cur = tem;//continuing the iteration.
+        }
+        list.head = sorted; //Finally updating the list head
+    }
+
+    static Node sortedInsert(Node sorted_head, Node newNode) {
+        //Todo: Handle the base cases
+        if (sorted_head == null) sorted_head = newNode;
+        else if ((int) sorted_head.data >= (int) newNode.data) {
+            newNode.next = sorted_head;
+            newNode.next.previous = newNode;
+            sorted_head = newNode;
+        } else {
+            Node cur = sorted_head; //To traverse the sorted list and find the proper position of the inserted node.
+            while (cur.next != null && (int) cur.next.data < (int) newNode.data)
+                cur = cur.next;
+            //Todo: Properly connect the nodes accordingly
+            newNode.next = cur.next;
+            if (cur.next != null)
+                newNode.next.previous = newNode; //If the inserted node isn't inserted at the end of the sorted list
+            cur.next = newNode;
+            newNode.previous = cur;
+        }
+        return sorted_head;
+    }
+
+    static void printList(MyList list) { //Using next;
+        Node cur = list.head;
+        while (cur.next != null) {
+            pw.print(cur.data + " -> ");
+            cur = cur.next;
+        }
+        pw.println(cur.data);
+    }
+
+    static void printListReverseOrder(MyList list) {
+        //Todo: will traverse to the end of the list then will start printing from that node using previous
+        // and also need to check if the elements are in non increasing order while reverse printing.
+        Node cur = list.head;
+        while (cur.next != null) cur = cur.next;
+        while (cur.previous != null) {
+            pw.print(cur.data + " -> ");
+            cur = cur.previous;
+        }
+        pw.println(cur.data);
+    }
+}
+
+class MyList {
+    Node head;
+
+    MyList(int[] array) {
+        head = new Node(array[0], null, null);
+        Node cur = head;
+        for (int i = 1; i < array.length; i++) {
+            Node temp = new Node(array[i], null, null);
+            cur.next = temp;
+            temp.previous = cur;
+            cur = cur.next;
+        }
+    }
+}
+
+class Node {
+    // The element that we want to put in the list
+    Object data;
+    // The reference to the next node in the list
+    Node next;
+    // The reference to the previous node in the list
+    Node previous;
+
+    @SuppressWarnings("unused")
+    Node(Object value, Node current, Node prev) {
+        data = value;
+        next = current;
+        previous = prev;
+    }
+}
+
+//Task6
+
+import java.io.BufferedOutputStream;
+import java.io.PrintWriter;
+
+//Task6
+public class Tester {
+    static final PrintWriter pw = new PrintWriter(new BufferedOutputStream(System.out));
+
+    public static void main(String[] args) {
+        int[] test = {1, 24, 24, 26, 29, 30, 4000, 10000};//Array in sorted order.
+        int search_value1 = 10000;//The value which will be checked
+        //Binary_Search_Lower_Bound method will always return and valid index even if the
+        //value doesn't exits in the array. So, it needs to be checked if search_value == array[index]
+        int index1 = Binary_Search_Lower_Bound(test, search_value1, -1, test.length);
+        pw.println(test[index1] == search_value1 ? "Value " + search_value1 + " exits in the array and the index is " + index1 : "Value " + search_value1 + " Does not exits in the array");
+        int search_value2 = -3434;//This value doesn't exits
+        int index2 = Binary_Search_Lower_Bound(test, search_value2, -1, test.length);
+        pw.println(test[index2] == search_value2 ? "Value " + search_value2 + " exits in the array and the index is " + index2 : "Value " + search_value2 + " Does not exits in the array");
+        pw.close();
+    }
+
+    //Todo: If there are multiple same value then this method will return the index where this value occurred first
+    static int Binary_Search_Lower_Bound(int[] array, int search_value, int low, int high) { //Binary Search But lower bound
+        if (low + 1 >= high) return high;
+        int mid = (low + high) >>> 1; //unsigned right shift which is an equivalent of (low + high) / 2 but here sign doesn't matter.
+        if (array[mid] >= search_value)
+            return Binary_Search_Lower_Bound(array, search_value, low, mid);
+        else return Binary_Search_Lower_Bound(array, search_value, mid, high);
+    }
+}
+
+//Task7
+
+import java.io.BufferedOutputStream;
+import java.io.PrintWriter;
+import java.math.BigInteger;
+
+//Task7
+public class Tester {
+    static final PrintWriter pw = new PrintWriter(new BufferedOutputStream(System.out));
+    static final int size = (int) 1e4 + 1;//This solution will only work for input <= 10^4 otherwise stackoverflow^^
+    static BigInteger[] fib = new BigInteger[size];//To prevent the integer overflow I am using BigInteger
+
+    static void generate_Fibonacci_Numbers(int i) {
+        if (i > size - 1) return;
+        fib[i] = fib[i - 1].add(fib[i - 2]);//fib[i - 1] + fib[i - 2]
+        generate_Fibonacci_Numbers(i + 1);//Recursively calling the method
+    }
+
+    public static void main(String[] args) {
+        fib[0] = BigInteger.ZERO;//Base case
+        fib[1] = BigInteger.ONE;//Base case
+        generate_Fibonacci_Numbers(2);//This method will generate fibonacci numbers and will store them in fib array.
+        //Todo: Adding some test cases
+        //It should print the first 100 fibonacci numbers.
+        for (int i = 1; i < 100; i++) {
+            pw.print(fib[i - 1] + " ");
+        }
+        pw.println(fib[99]);//100 - 1 = 99
+        pw.close();//Closing the output stream.
+    }
+
+}
